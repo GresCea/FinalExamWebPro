@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const menuClose = document.getElementById('menu-close');
     const sideMenu = document.getElementById('side-menu');
     const menuOverlay = document.getElementById('menu-overlay');
-    const profileIconLink = document.getElementById('profile-icon-link');
+    // Note: profileIconLink is handled by _Layout.cshtml now
     const langToggleButton = document.getElementById('lang-toggle-btn');
 
     // --- Define Sun/Moon Journey Parameters ---
@@ -140,21 +140,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (menuClose) menuClose.addEventListener('click', closeMenu);
     if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
 
-    // --- Global Auth Check ---
-    function checkLoginStatus() {
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-        if (profileIconLink) {
-            if (isLoggedIn === 'true') {
-                profileIconLink.href = 'profile.jsp';
-                profileIconLink.setAttribute('aria-label', 'View Profile');
-            } else {
-                profileIconLink.href = 'login.jsp';
-                profileIconLink.setAttribute('aria-label', 'Login or Register');
-            }
-        }
-    }
-    checkLoginStatus(); // Check on initial load
-
     // --- Translation Logic ---
     function setLanguage(lang) {
         if (!translations || !translations[lang]) {
@@ -164,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         document.querySelectorAll('[data-key]').forEach(element => {
             const key = element.getAttribute('data-key');
-            if (translations[lang][key] !== undefined) { // Check if key exists
+            if (translations[lang][key] !== undefined) { 
                 if (key.includes('placeholder_')) {
                     element.placeholder = translations[lang][key];
                 } else {
@@ -177,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (langToggleButton) langToggleButton.textContent = lang.toUpperCase();
         localStorage.setItem('language', lang);
-        document.documentElement.lang = lang; // Update HTML lang attribute
+        document.documentElement.lang = lang; 
     }
 
     if (langToggleButton) {
@@ -190,20 +175,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // --- Initial Setup Calls ---
     const savedLang = localStorage.getItem('language') || 'en';
-    setLanguage(savedLang); // Apply saved or default language
+    setLanguage(savedLang); 
 
     if (document.getElementById('the-sun')) {
-        handleScroll(); // Initial position for sun/moon if they exist
+        handleScroll(); 
     }
 
     // --- Global Event Listeners ---
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", () => {
-        getCssColors(); // Re-fetch colors if needed on resize
+        getCssColors(); 
         if (document.getElementById('the-sun')) {
-            handleScroll(); // Recalculate positions on resize
+            handleScroll(); 
         }
     });
-
 });
-
